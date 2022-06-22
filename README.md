@@ -2,6 +2,26 @@
 
 > Detailed step by step procedure to deploying PERN(Postgres, Express, React, Node) stack on Ubuntu 20.04 with NGINX and SSL
 
+## 0. Setting AWS
+Una vez descargado el archivo.pem ejecutar
+```
+cd ~/.ssh
+sudo vim 
+```
+una vez dentro agregar
+```
+Host awsServer
+  HostName <La dirección>
+  User ubuntu
+  IdentityFile ~/.ssh/claveSSH.pem
+  IdentitiesOnly yes
+```
+
+Luego para conectar simplemente
+```
+ssh awsServer
+```
+
 ## 1. Install and Configure PostgreSQL
 
 Update packages
@@ -94,7 +114,7 @@ ALTER ROLE
 postgres=#
 ```
 
-## 2. Migrate Database Scheme & data
+## 2. Migrate Database Scheme & data (Omitir)
 As with most sql database PostgreSQL allows us to easily copy our database schema and data from our local development postgres instance and copy it over to the Postgres isntance running in our production server.
 
 On your local dev machine, open up a terminal and run:
@@ -180,7 +200,7 @@ mkdir yelp-app
 move inside the `yelp-app` directory and clone the project repo
 ```
 cd yelp-app
-git clone https://github.com/Sanjeev-Thiyagarajan/PERN-STACK-DEPLOYMENT.git .
+git clone https://github.com/mirepo.git .
 ```
 
 ## 4. Install Node
@@ -228,21 +248,7 @@ After verify App is running, save the current list of processes so that the same
 pm2 save
 ```
 
-## 6. Deploy React Frontend
-Navigate to the client directory in our App code and run `npm run build`. 
-
-This will create a finalized production ready version of our react frontent in directory called `build`. The build folder is what the NGINX server will be configured to serve.
-
-```
-ubuntu@ip-172-31-20-1:~/apps/yelp-app/client$ ls
-README.md  build  node_modules  package-lock.json  package.json  public  src
-ubuntu@ip-172-31-20-1:~/apps/yelp-app/client$ cd build/
-ubuntu@ip-172-31-20-1:~/apps/yelp-app/client/build$ ls
-asset-manifest.json  favicon.ico  index.html  logo192.png  logo512.png  manifest.json  precache-manifest.ee13f4c95d9882a5229da70669bb264c.js  robots.txt  service-worker.js  static
-ubuntu@ip-172-31-20-1:~/apps/yelp-app/client/build$
-```
-
-## 7. Install and Configure NGINX
+## 6. Install and Configure NGINX (Para mantener un servidor ordenado)
 
 Install and enable NGINX
 ```
